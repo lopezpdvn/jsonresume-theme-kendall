@@ -35,6 +35,12 @@ function getMonth(startDateStr) {
     }
 }
 
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split('-');
+    return `${month}/${day}/${year}`;
+  }
+
+
 function render(resumeObject) {
 
     resumeObject.basics.capitalName = resumeObject.basics.name.toUpperCase();
@@ -45,8 +51,8 @@ function render(resumeObject) {
                         d: 'mm'
                     });
     }
-    if (resumeObject.basics.image || resumeObject.basics.gravatar) {
-        resumeObject.photo = resumeObject.basics.image ? resumeObject.basics.image : resumeObject.basics.gravatar;
+    if (resumeObject.basics.picture || resumeObject.basics.gravatar) {
+        resumeObject.photo = resumeObject.basics.picture ? resumeObject.basics.picture : resumeObject.basics.gravatar;
     }
 
     _.each(resumeObject.basics.profiles, function(p){
@@ -54,46 +60,46 @@ function render(resumeObject) {
             // special cases
             case "google-plus":
             case "googleplus":
-                p.iconClass = "fab fa-google-plus";
+                p.iconClass = "fa fa-google-plus";
                 break;
             case "flickr":
             case "flicker":
-                p.iconClass = "fab fa-flickr";
+                p.iconClass = "fa fa-flickr";
                 break;
             case "dribbble":
             case "dribble":
-                p.iconClass = "fab fa-dribbble";
+                p.iconClass = "fa fa-dribbble";
                 break;
             case "codepen":
-                p.iconClass = "fab fa-codepen";
+                p.iconClass = "fa fa-codepen";
                 break;
             case "soundcloud":
-                p.iconClass = "fab fa-soundcloud";
+                p.iconClass = "fa fa-soundcloud";
                 break;
             case "reddit":
-                p.iconClass = "fab fa-reddit";
+                p.iconClass = "fa fa-reddit";
                 break;
             case "tumblr":
             case "tumbler":
-                p.iconClass = "fab fa-tumblr";
+                p.iconClass = "fa fa-tumblr";
                 break;
             case "stack-overflow":
             case "stackoverflow":
-                p.iconClass = "fab fa-stack-overflow";
+                p.iconClass = "fa fa-stack-overflow";
                 break;
             case "blog":
             case "rss":
-                p.iconClass = "fas fa-rss";
+                p.iconClass = "fa fa-rss";
                 break;
             case "gitlab":
-                p.iconClass = "fab fa-gitlab";
+                p.iconClass = "fa fa-gitlab";
                 break;
             case "keybase":
-                p.iconClass = "fas fa-key";
+                p.iconClass = "fa fa-key";
                 break;
             default:
                 // try to automatically select the icon based on the name
-                p.iconClass = "fab fa-" + p.network.toLowerCase();
+                p.iconClass = "fa fa-" + p.network.toLowerCase();
         }
 
         if (p.url) {
@@ -107,13 +113,13 @@ function render(resumeObject) {
         resumeObject.workBool = true;
         _.each(resumeObject.work, function(w){
             if (w.startDate) {
-                w.startDateYear = (w.startDate || "").substr(0,4);
-                w.startDateMonth = getMonth(w.startDate || "");
+                w.startDateYear = formatDate(w.startDate);
+                w.startDateMonth = '';
 
             }
             if(w.endDate) {
-                w.endDateYear = (w.endDate || "").substr(0,4);
-                w.endDateMonth = getMonth(w.endDate || "");
+                w.endDateYear = formatDate(w.endDate);
+                w.endDateMonth = '';
             } else {
                 w.endDateYear = 'Present'
             }
@@ -131,13 +137,12 @@ function render(resumeObject) {
         resumeObject.volunteerBool = true;
         _.each(resumeObject.volunteer, function(w){
             if (w.startDate) {
-                w.startDateYear = (w.startDate || "").substr(0,4);
-                w.startDateMonth = getMonth(w.startDate || "");
-
+                w.startDateYear = formatDate(w.startDate);
+                w.startDateMonth = '';
             }
             if(w.endDate) {
-                w.endDateYear = (w.endDate || "").substr(0,4);
-                w.endDateMonth = getMonth(w.endDate || "");
+                w.endDateYear = formatDate(w.endDate);
+                w.endDateMonth = '';
             } else {
                 w.endDateYear = 'Present'
             }
@@ -151,12 +156,6 @@ function render(resumeObject) {
         });
     }
 
-    if (resumeObject.projects && resumeObject.projects.length) {
-        if (resumeObject.projects[0].name) {
-            resumeObject.projectsBool = true;
-        }
-    }
-
     if (resumeObject.education && resumeObject.education.length) {
         if (resumeObject.education[0].institution) {
             resumeObject.educationBool = true;
@@ -167,14 +166,14 @@ function render(resumeObject) {
                   e.educationDetail = e.area + ", "+ e.studyType;
                 }
                 if (e.startDate) {
-                    e.startDateYear = e.startDate.substr(0,4);
-                    e.startDateMonth = getMonth(e.startDate || "");
+                    e.startDateYear = formatDate(e.startDate);
+                    e.startDateMonth = '';
                 } else {
                     e.endDateMonth = "";
                 }
                 if (e.endDate) {
-                    e.endDateYear = e.endDate.substr(0,4);
-                    e.endDateMonth = getMonth(e.endDate || "")
+                    e.endDateYear = formatDate(e.endDate);
+                    e.endDateMonth = '';
 
                     if (e.endDateYear > curyear) {
                         e.endDateYear += " (expected)";
@@ -213,6 +212,12 @@ function render(resumeObject) {
                 a.day = (a.releaseDate || "").substr(8,2);
                 a.month = getMonth(a.releaseDate || "");
             });
+        }
+    }
+
+    if (resumeObject.projects && resumeObject.projects.length) {
+        if (resumeObject.projects[0].name) {
+            resumeObject.projectsBool = true;
         }
     }
 
